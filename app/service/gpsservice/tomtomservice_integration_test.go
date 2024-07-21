@@ -1,4 +1,4 @@
-package service
+package gpsservice
 
 import (
 	"context"
@@ -77,6 +77,7 @@ func getEnvFilePath() string {
 	}
 
 	appFolderPath := filepath.Dir(current_directory)
-	workingDirectoryPath := filepath.Dir(appFolderPath)
+	serviceFolderPath := filepath.Dir(appFolderPath)
+	workingDirectoryPath := filepath.Dir(serviceFolderPath)
 	return path.Join(workingDirectoryPath, envFileDir, envFileName)
 }

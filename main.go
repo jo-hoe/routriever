@@ -5,12 +5,13 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"time"
 
 	"github.com/jo-hoe/routriever/app/config"
 	"github.com/jo-hoe/routriever/app/service"
+	"github.com/jo-hoe/routriever/app/service/gpsservice"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 const (
@@ -22,8 +23,7 @@ const (
 )
 
 var (
-// serviceInstance service.RoutrieverService
-// serviceConfig   config.Config
+	writer *service.ScheduledWriter
 )
 
 func main() {
@@ -39,6 +39,8 @@ func main() {
 		port = defaultPort
 	}
 
+	go writer.Run()
+
 	// start server
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))
 }
@@ -50,15 +52,17 @@ func init() {
 		configPath = defaultConfigPath
 	}
 
-	_, err := config.GetConfig(configPath)
+	serviceConfig, err := config.GetConfig(configPath)
 	if err != nil {
 		log.Fatal("could not read config")
 	}
 
-	_, err = service.NewRoutrieverService()
+	gpsServiceInstance, err := gpsservice.NewRoutrieverService()
 	if err != nil {
 		log.Fatal("could not create routriever service")
 	}
+
+	writer = service.NewScheduledWriter(time.Duration(10)*time.Second, &gpsServiceInstance, &serviceConfig)
 }
 
 func probeHandler(ctx echo.Context) (err error) {
