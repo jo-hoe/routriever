@@ -36,9 +36,14 @@ func (sw *ScheduledWriter) processConfigs() {
 }
 
 func processConfig(config config.Route, service gpsservice.RoutrieverService) {
-	_, err := service.GetRouteDistance(config.Start, config.End)
+	result, err := service.GetRouteDistance(config.Start, config.End)
 	if err != nil {
 		log.Printf("could not retrieve data for route %s error: %v", config.Name, err.Error())
 	}
 	log.Printf("retrieved data for route %s", config.Name)
+	write(config, result)
+}
+
+func write(config config.Route, valueInSeconds int) {
+	log.Printf("writing data for route %s with value %d", config.Name, valueInSeconds)
 }
