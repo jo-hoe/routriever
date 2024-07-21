@@ -1,4 +1,4 @@
-package app
+package service
 
 import (
 	"context"
@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/jo-hoe/routriever/app/config"
 	gotdotenv "github.com/joho/godotenv"
 )
 
@@ -33,8 +34,8 @@ func Test_Integration_TomTomService_GetRouteDistance(t *testing.T) {
 
 	type args struct {
 		ctx   context.Context
-		start GPSCoordinates
-		end   GPSCoordinates
+		start config.GPSCoordinates
+		end   config.GPSCoordinates
 	}
 	tests := []struct {
 		name    string
@@ -48,9 +49,9 @@ func Test_Integration_TomTomService_GetRouteDistance(t *testing.T) {
 			args: args{
 				ctx: context.Background(),
 				// TomTom Amsterdam
-				start: GPSCoordinates{Latitude: 52.3764134, Longitude: 4.908321},
+				start: config.GPSCoordinates{Latitude: 52.3764134, Longitude: 4.908321},
 				// TomTom Eindhoven
-				end: GPSCoordinates{Latitude: 51.4125186, Longitude: 5.4505796},
+				end: config.GPSCoordinates{Latitude: 51.4125186, Longitude: 5.4505796},
 			},
 			wantErr: false,
 		},
@@ -75,5 +76,7 @@ func getEnvFilePath() string {
 		log.Fatal(error)
 	}
 
-	return path.Join(filepath.Dir(current_directory), envFileDir, envFileName)
+	appFolderPath := filepath.Dir(current_directory)
+	workingDirectoryPath := filepath.Dir(appFolderPath)
+	return path.Join(workingDirectoryPath, envFileDir, envFileName)
 }

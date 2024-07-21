@@ -1,19 +1,16 @@
-package app
+package service
 
 import (
 	"context"
 	"errors"
 	"net/http"
 	"os"
+
+	"github.com/jo-hoe/routriever/app/config"
 )
 
 type RoutrieverService interface {
-	GetRouteDistance(ctx context.Context, start GPSCoordinates, end GPSCoordinates) (travelTimeInSeconds int, err error)
-}
-
-type GPSCoordinates struct {
-	Latitude  float32
-	Longitude float32
+	GetRouteDistance(ctx context.Context, start config.GPSCoordinates, end config.GPSCoordinates) (travelTimeInSeconds int, err error)
 }
 
 func NewRoutrieverService() (result RoutrieverService, err error) {

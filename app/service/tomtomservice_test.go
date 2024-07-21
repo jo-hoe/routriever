@@ -1,4 +1,4 @@
-package app
+package service
 
 import (
 	"bytes"
@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/jo-hoe/routriever/app/config"
 	"github.com/jo-hoe/routriever/test"
 )
 
@@ -20,8 +21,8 @@ func TestTomTomService_generateURL(t *testing.T) {
 	tomTomService := NewTomTomService(testApiKey, nil)
 
 	type args struct {
-		start GPSCoordinates
-		end   GPSCoordinates
+		start config.GPSCoordinates
+		end   config.GPSCoordinates
 	}
 	tests := []struct {
 		name string
@@ -33,11 +34,11 @@ func TestTomTomService_generateURL(t *testing.T) {
 			name: "positive test",
 			tr:   tomTomService,
 			args: args{
-				start: GPSCoordinates{
+				start: config.GPSCoordinates{
 					Latitude:  1.0,
 					Longitude: 2.0,
 				},
-				end: GPSCoordinates{
+				end: config.GPSCoordinates{
 					Latitude:  3.0,
 					Longitude: 4.0,
 				},
@@ -80,8 +81,8 @@ func TestTomTomService_GetRouteDistance(t *testing.T) {
 
 	type args struct {
 		ctx   context.Context
-		start GPSCoordinates
-		end   GPSCoordinates
+		start config.GPSCoordinates
+		end   config.GPSCoordinates
 	}
 	tests := []struct {
 		name                    string
@@ -95,8 +96,8 @@ func TestTomTomService_GetRouteDistance(t *testing.T) {
 			tr:   tomTomService,
 			args: args{
 				ctx:   context.Background(),
-				start: GPSCoordinates{Latitude: 1.0, Longitude: 2.0},
-				end:   GPSCoordinates{Latitude: 3.0, Longitude: 4.0},
+				start: config.GPSCoordinates{Latitude: 1.0, Longitude: 2.0},
+				end:   config.GPSCoordinates{Latitude: 3.0, Longitude: 4.0},
 			},
 			wantTravelTimeInSeconds: 218,
 			wantErr:                 false,

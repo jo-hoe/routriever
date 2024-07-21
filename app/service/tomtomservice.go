@@ -1,10 +1,12 @@
-package app
+package service
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
+
+	"github.com/jo-hoe/routriever/app/config"
 )
 
 var (
@@ -35,7 +37,7 @@ func NewTomTomService(apiKey string, httpClient *http.Client) *TomTomService {
 	}
 }
 
-func (t *TomTomService) GetRouteDistance(ctx context.Context, start GPSCoordinates, end GPSCoordinates) (travelTimeInSeconds int, err error) {
+func (t *TomTomService) GetRouteDistance(ctx context.Context, start config.GPSCoordinates, end config.GPSCoordinates) (travelTimeInSeconds int, err error) {
 	travelTimeInSeconds = -1
 
 	response, err := t.httpClient.Get(t.generateURL(start, end))
@@ -56,6 +58,6 @@ func (t *TomTomService) GetRouteDistance(ctx context.Context, start GPSCoordinat
 	return responseData.Routes[0].Summary.TravelTimeInSeconds, nil
 }
 
-func (t *TomTomService) generateURL(start GPSCoordinates, end GPSCoordinates) string {
+func (t *TomTomService) generateURL(start config.GPSCoordinates, end config.GPSCoordinates) string {
 	return fmt.Sprintf("%s%.7f,%.7f:%.7f,%.7f/json?&key=%s", routing_url, start.Latitude, start.Longitude, end.Latitude, end.Longitude, t.apiKey)
 }
