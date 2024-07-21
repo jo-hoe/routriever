@@ -4,13 +4,18 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
+	"strconv"
 
 	"github.com/jo-hoe/routriever/app/config"
 )
 
-var (
-	TomTomApiKeyEnvVar = "TOMTOM_API_KEY"
+const (
+	TomTomApiKeyEnvVar        = "TOMTOM_API_KEY"
+	MaxApiRequestPerDayEnvVar = "TOMTOM_MAX_API_REQUEST_PER_DAY"
+	MaxApiRequestPerDay       = 2500
 
 	base_url     = "https://api.tomtom.com"
 	routing_path = "/routing/1/calculateRoute/"
@@ -18,8 +23,9 @@ var (
 )
 
 type TomTomService struct {
-	apiKey     string
-	httpClient *http.Client
+	apiKey              string
+	httpClient          *http.Client
+	maxApiRequestPerDay int
 }
 
 type tomTomCalcRouteResponse struct {
@@ -31,9 +37,17 @@ type tomTomCalcRouteResponse struct {
 }
 
 func NewTomTomService(apiKey string, httpClient *http.Client) *TomTomService {
+	max, err := strconv.Atoi(os.Getenv(MaxApiRequestPerDayEnvVar))
+	if err != nil {
+		log.Printf("could not read max requests per day in env var %s - %v", MaxApiRequestPerDayEnvVar, err)
+		log.Printf("using default value %d", MaxApiRequestPerDay)
+		max = MaxApiRequestPerDay
+	}
+
 	return &TomTomService{
-		apiKey:     apiKey,
-		httpClient: httpClient,
+		apiKey:              apiKey,
+		httpClient:          httpClient,
+		maxApiRequestPerDay: max,
 	}
 }
 
