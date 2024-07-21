@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	"log"
+	"errors"
 	"net/http"
 	"os"
 )
@@ -16,12 +16,13 @@ type GPSCoordinates struct {
 	Longitude float32
 }
 
-func NewRoutrieverService() RoutrieverService {
+func NewRoutrieverService() (result RoutrieverService, err error) {
 	tomTomApiKey := os.Getenv(TomTomApiKeyEnvVar)
-	if tomTomApiKey == "" {
-		log.Printf(TomTomApiKeyEnvVar + " not set")
-		return nil
+	if tomTomApiKey != "" {
+		result = NewTomTomService(tomTomApiKey, http.DefaultClient)
 	} else {
-		return NewTomTomService(tomTomApiKey, http.DefaultClient)
+		err = errors.New(TomTomApiKeyEnvVar + " not set")
 	}
+
+	return result, err
 }

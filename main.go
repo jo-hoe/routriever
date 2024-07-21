@@ -15,8 +15,8 @@ import (
 const defaultPort = "8080"
 
 func main() {
-	service := app.NewRoutrieverService()
-	if service == nil {
+	_, err := app.NewRoutrieverService()
+	if err != nil {
 		log.Fatal("could not create routriever service")
 	}
 
