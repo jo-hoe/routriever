@@ -1,7 +1,6 @@
 package gpsservice
 
 import (
-	"context"
 	"errors"
 	"net/http"
 	"os"
@@ -10,7 +9,7 @@ import (
 )
 
 type RoutrieverService interface {
-	GetRouteDistance(ctx context.Context, start config.GPSCoordinates, end config.GPSCoordinates) (travelTimeInSeconds int, err error)
+	GetRouteDistance(start config.GPSCoordinates, end config.GPSCoordinates) (travelTimeInSeconds int, err error)
 }
 
 func NewRoutrieverService() (result RoutrieverService, err error) {

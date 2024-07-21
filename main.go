@@ -20,6 +20,9 @@ const (
 
 	configPathEnvVar  = "CONFIG_PATH"
 	defaultConfigPath = "./config.yaml"
+
+	updateRateEnvVar  = "UPDATE_RATE"
+	defaultUpdateRate = 1200
 )
 
 var (
@@ -62,7 +65,14 @@ func init() {
 		log.Fatal("could not create routriever service")
 	}
 
-	writer = service.NewScheduledWriter(time.Duration(10)*time.Second, &gpsServiceInstance, &serviceConfig)
+	updateRate := os.Getenv(updateRateEnvVar)
+	duration, err := time.ParseDuration(updateRate)
+	if err != nil {
+		log.Printf("could not read duration %v, using default value %vs", err, defaultUpdateRate)
+		duration = time.Duration(time.Duration(defaultUpdateRate) * time.Second)
+	}
+
+	writer = service.NewScheduledWriter(duration, &gpsServiceInstance, &serviceConfig)
 }
 
 func probeHandler(ctx echo.Context) (err error) {

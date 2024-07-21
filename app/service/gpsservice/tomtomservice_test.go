@@ -2,7 +2,6 @@ package gpsservice
 
 import (
 	"bytes"
-	"context"
 	"io"
 	"net/http"
 	"testing"
@@ -80,7 +79,6 @@ func TestTomTomService_GetRouteDistance(t *testing.T) {
 	tomTomService := NewTomTomService("", client)
 
 	type args struct {
-		ctx   context.Context
 		start config.GPSCoordinates
 		end   config.GPSCoordinates
 	}
@@ -95,7 +93,6 @@ func TestTomTomService_GetRouteDistance(t *testing.T) {
 			name: "positive test",
 			tr:   tomTomService,
 			args: args{
-				ctx:   context.Background(),
 				start: config.GPSCoordinates{Latitude: 1.0, Longitude: 2.0},
 				end:   config.GPSCoordinates{Latitude: 3.0, Longitude: 4.0},
 			},
@@ -105,7 +102,7 @@ func TestTomTomService_GetRouteDistance(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotTravelTimeInSeconds, err := tt.tr.GetRouteDistance(tt.args.ctx, tt.args.start, tt.args.end)
+			gotTravelTimeInSeconds, err := tt.tr.GetRouteDistance(tt.args.start, tt.args.end)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("TomTomService.GetRouteDistance() error = %v, wantErr %v", err, tt.wantErr)
 				return

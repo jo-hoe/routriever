@@ -1,7 +1,6 @@
 package gpsservice
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -51,7 +50,7 @@ func NewTomTomService(apiKey string, httpClient *http.Client) *TomTomService {
 	}
 }
 
-func (t *TomTomService) GetRouteDistance(ctx context.Context, start config.GPSCoordinates, end config.GPSCoordinates) (travelTimeInSeconds int, err error) {
+func (t *TomTomService) GetRouteDistance(start config.GPSCoordinates, end config.GPSCoordinates) (travelTimeInSeconds int, err error) {
 	travelTimeInSeconds = -1
 
 	response, err := t.httpClient.Get(t.generateURL(start, end))
