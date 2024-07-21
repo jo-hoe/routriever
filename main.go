@@ -13,14 +13,37 @@ import (
 	"github.com/jo-hoe/routriever/app/service"
 )
 
-const portEnvVar = "PORT"
-const defaultPort = "8080"
+const (
+	portEnvVar  = "PORT"
+	defaultPort = "8080"
 
-const configPathEnvVar = "CONFIG_PATH"
-const defaultConfigPath = "./config.yaml"
+	configPathEnvVar  = "CONFIG_PATH"
+	defaultConfigPath = "./config.yaml"
+)
 
+var (
+// serviceInstance service.RoutrieverService
+// serviceConfig   config.Config
+)
 
 func main() {
+	e := echo.New()
+
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	e.GET("/", probeHandler)
+
+	port := os.Getenv(portEnvVar)
+	if port == "" {
+		port = defaultPort
+	}
+
+	// start server
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))
+}
+
+func init() {
 	configPath := os.Getenv(configPathEnvVar)
 	if configPath == "" {
 		log.Printf("CONFIG_PATH not set, using default path '%s'", defaultConfigPath)
@@ -36,21 +59,6 @@ func main() {
 	if err != nil {
 		log.Fatal("could not create routriever service")
 	}
-
-	e := echo.New()
-
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-
-	e.GET("/", probeHandler)
-
-	port := os.Getenv(portEnvVar)
-	if port == "" {
-		port = defaultPort
-	}
-
-	// start server
-	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))
 }
 
 func probeHandler(ctx echo.Context) (err error) {
