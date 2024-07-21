@@ -2,16 +2,24 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
+	"github.com/jo-hoe/routriever/app"
 )
 
 const defaultPort = "8080"
 
 func main() {
+	service := app.NewRoutrieverService()
+	if service == nil {
+		log.Fatal("could not create routriever service")
+	}
+
 	e := echo.New()
 
 	e.Use(middleware.Logger())

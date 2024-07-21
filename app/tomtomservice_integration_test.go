@@ -5,19 +5,24 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path"
+	"path/filepath"
 	"testing"
 
 	gotdotenv "github.com/joho/godotenv"
 )
 
-const integrationTestApiKeyEnvVar = "INTEGRATION_TEST_API_KEY"
+const integrationTestApiKeyEnvVar = "TOMTOM_API_KEY"
+const envFileName = ".env"
+const envFileDir = "dev"
 
 // calls the api and uses either the .env
 func Test_Integration_TomTomService_GetRouteDistance(t *testing.T) {
 	// try to load .env file
-	err := gotdotenv.Load() // load .env file
+	envFilePath := getEnvFilePath()
+	err := gotdotenv.Load(envFilePath) // load .env file
 	if err != nil {
-		log.Print(".env file not found")
+		log.Printf("%s file not found in", envFilePath)
 	}
 	integrationTestApiKey := os.Getenv(integrationTestApiKeyEnvVar)
 	if integrationTestApiKey == "" {
@@ -62,4 +67,13 @@ func Test_Integration_TomTomService_GetRouteDistance(t *testing.T) {
 			}
 		})
 	}
+}
+
+func getEnvFilePath() string {
+	current_directory, error := os.Getwd()
+	if error != nil {
+		log.Fatal(error)
+	}
+
+	return path.Join(filepath.Dir(current_directory), envFileDir, envFileName)
 }

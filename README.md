@@ -7,6 +7,17 @@
 
 ## How To Run
 
+## Secrets
+
+For local development it is excepted to have a `.env` file in folder `dev`.
+You can use applications such a [VeraCrypt](https://www.veracrypt.fr/en/Home.html) to encrypt the file.
+
+The .env file is excepted to have the following content:
+
+```.env
+TOMTOM_API_KEY=<your key>
+```
+
 ### Optional
 
 Run the project is using `make`. `make` is typically installed by default on Linux and Mac.

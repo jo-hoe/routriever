@@ -8,6 +8,8 @@ import (
 )
 
 var (
+	TomTomApiKeyEnvVar = "TOMTOM_API_KEY"
+
 	base_url     = "https://api.tomtom.com"
 	routing_path = "/routing/1/calculateRoute/"
 	routing_url  = base_url + routing_path

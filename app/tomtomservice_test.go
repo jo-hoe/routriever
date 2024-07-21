@@ -10,6 +10,10 @@ import (
 	"github.com/jo-hoe/routriever/test"
 )
 
+func TestInterfaceImplementation(t *testing.T) {
+	var _ RoutrieverService = (*TomTomService)(nil)
+}
+
 func TestTomTomService_generateURL(t *testing.T) {
 	testApiKey := "testApiKey"
 
