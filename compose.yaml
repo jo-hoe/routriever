@@ -22,9 +22,9 @@ services:
   db:
     image: postgres:16.3-alpine3.20
     environment:
-      POSTGRES_DB: mydb
-      POSTGRES_USER: mydb
-      POSTGRES_PASSWORD: mydb
+      POSTGRES_DB: dbname
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
 

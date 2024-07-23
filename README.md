@@ -5,6 +5,18 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/jo-hoe/routriever)](https://goreportcard.com/report/github.com/jo-hoe/routriever)
 [![Coverage Status](https://coveralls.io/repos/github/jo-hoe/routriever/badge.svg?branch=main)](https://coveralls.io/github/jo-hoe/routriever?branch=main)
 
+## Planned Architecture
+
+The deployment will run a pod, a service and provide a service monitor.
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+...
+```
+
+The service monitor can be consumed by Prometheus.
+
 ## How To Run
 
 ## Secrets
