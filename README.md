@@ -5,9 +5,11 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/jo-hoe/routriever)](https://goreportcard.com/report/github.com/jo-hoe/routriever)
 [![Coverage Status](https://coveralls.io/repos/github/jo-hoe/routriever/badge.svg?branch=main)](https://coveralls.io/github/jo-hoe/routriever?branch=main)
 
+Collects length of given routes and provides them as business metric to prometheus.
+
 ## Planned Architecture
 
-The deployment will run a pod, a service and provide a service monitor.
+The deployment will run a pod, a service, and provide a service monitor to track the metric.
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
