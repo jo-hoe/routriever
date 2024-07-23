@@ -5,13 +5,14 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/jo-hoe/routriever/app/config"
-	"github.com/jo-hoe/routriever/app/service"
+	app "github.com/jo-hoe/routriever/app/service"
 	"github.com/jo-hoe/routriever/app/service/gpsservice"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 const (
@@ -20,13 +21,11 @@ const (
 
 	configPathEnvVar  = "CONFIG_PATH"
 	defaultConfigPath = "./config.yaml"
-
-	updateRateEnvVar  = "UPDATE_RATE"
-	defaultUpdateRate = 1200
 )
 
 var (
-	writer *service.ScheduledWriter
+	metrics           map[string]prometheus.Gauge
+	routrieverService gpsservice.RoutrieverService
 )
 
 func main() {
@@ -36,13 +35,12 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/", probeHandler)
+	http.Handle("/metrics", promhttp.Handler())
 
 	port := os.Getenv(portEnvVar)
 	if port == "" {
 		port = defaultPort
 	}
-
-	go writer.Run()
 
 	// start server
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%s", port)))
@@ -55,24 +53,21 @@ func init() {
 		configPath = defaultConfigPath
 	}
 
-	serviceConfig, err := config.GetConfig(configPath)
+	config, err := config.GetConfigFromFile(configPath)
 	if err != nil {
-		log.Fatal("could not read config")
+		log.Fatalf("could not read config %v", err)
 	}
 
-	gpsServiceInstance, err := gpsservice.NewRoutrieverService()
+	// create metrics from config
+	metrics = app.GeneratePrometheusMetrics(config)
+	for _, metric := range metrics {
+		prometheus.MustRegister(metric)
+	}
+
+	routrieverService, err = gpsservice.NewRoutrieverService()
 	if err != nil {
 		log.Fatal("could not create routriever service")
 	}
-
-	updateRate := os.Getenv(updateRateEnvVar)
-	duration, err := time.ParseDuration(updateRate)
-	if err != nil {
-		log.Printf("could not read duration %v, using default value %vs", err, defaultUpdateRate)
-		duration = time.Duration(time.Duration(defaultUpdateRate) * time.Second)
-	}
-
-	writer = service.NewScheduledWriter(duration, &gpsServiceInstance, &serviceConfig)
 }
 
 func probeHandler(ctx echo.Context) (err error) {

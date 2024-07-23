@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -33,5 +34,13 @@ func GetConfig(configPath string) (config Config, err error) {
 		err = fmt.Errorf("could not unmarshal config file error: '%v'", err)
 	}
 
+	return config, err
+}
+
+func GetConfigFromFile(configPath string) (config Config, err error) {
+	config, err = GetConfig(configPath)
+	if err != nil {
+		log.Fatal("could not read config")
+	}
 	return config, err
 }
