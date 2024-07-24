@@ -22,6 +22,9 @@ const (
 
 	configPathEnvVar  = "CONFIG_PATH"
 	defaultConfigPath = "/config/config.yaml"
+
+	secretPathEnvVar  = "SECRET_PATH"
+	defaultSecretPath = "/secret/secret.txt"
 )
 
 func main() {
@@ -64,7 +67,12 @@ func init() {
 	app.RegisterMetrics(prometheusMetrics)
 	metricConfigs := app.GetMetricsConfig(config, prometheusMetrics)
 
-	routrieverService, err := gpsservice.NewRoutrieverService()
+	secretPath := os.Getenv(secretPathEnvVar)
+	if secretPath == "" {
+		log.Printf("SECRET_PATH not set, using default path '%s'", defaultSecretPath)
+		secretPath = defaultSecretPath
+	}
+	routrieverService, err := gpsservice.NewRoutrieverService(secretPath)
 	if err != nil {
 		log.Fatalf("could not create routriever service error: '%v'", err)
 	}

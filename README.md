@@ -21,21 +21,21 @@ The service monitor can be consumed by Prometheus.
 
 ## How To Run
 
-For local development, you can use `docker-compose` to run the service.
-Before you should add a `.env` file in the `dev` folder.
+To run the service locally, you can use `docker-compose`.
+Before you have to provide the api key via a file with name `secret.txt` in folder `dev`.
 This file should contain the following content:
 
-```.env
-TOMTOM_API_KEY=your_api_key
+```.txt
+<your_tomtom_api_key>
 ```
 
-Then you can run the service with
+In case you do not want to have the API key stored in plain text, consider to mount the dev folder as a volume, e.g. with [VeraCrypt](https://www.veracrypt.fr/en/Home.html).
+
+Afterwards you can run the service with
 
 ```bash
 docker-compose up
 ```
-
-In case you do not want to have the API key stored in plain text, consider to mount the dev folder as a volume, e.g. with [VeraCrypt](https://www.veracrypt.fr/en/Home.html).
 
 ### Optional
 

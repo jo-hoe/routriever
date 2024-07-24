@@ -1,7 +1,6 @@
 package gpsservice
 
 import (
-	"errors"
 	"net/http"
 	"os"
 
@@ -12,13 +11,23 @@ type RoutrieverService interface {
 	GetRouteDistance(start config.GPSCoordinates, end config.GPSCoordinates) (travelTimeInSeconds int, err error)
 }
 
-func NewRoutrieverService() (result RoutrieverService, err error) {
-	tomTomApiKey := os.Getenv(TomTomApiKeyEnvVar)
-	if tomTomApiKey != "" {
-		result = NewTomTomService(tomTomApiKey, http.DefaultClient)
-	} else {
-		err = errors.New(TomTomApiKeyEnvVar + " not set")
+func NewRoutrieverService(secretPath string) (result RoutrieverService, err error) {
+	apiKey, err := readSecretFromFile(secretPath)
+	if err != nil {
+		return result, err
 	}
 
+	result = NewTomTomService(apiKey, http.DefaultClient)
+
 	return result, err
+}
+
+func readSecretFromFile(secretPath string) (secret string, err error) {
+	data, err := os.ReadFile(secretPath)
+	if err != nil {
+		return secret, err
+	}
+
+	secret = string(data)
+	return secret, err
 }
