@@ -62,3 +62,15 @@ You can use `make` to start the service
 ```bash
 make test
 ```
+
+## Linting
+
+Project used `golangci-lint` for linting.
+
+<https://golangci-lint.run/welcome/install/>
+
+Run the linting locally by executing
+
+```bash
+golangci-lint run ./...
+```
