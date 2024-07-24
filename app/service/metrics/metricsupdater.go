@@ -57,4 +57,5 @@ func (m *MetricsUpdater) updateMetric(metricConfig app.MetricConfig) {
 		return
 	}
 	metricConfig.Metric.Set(float64(distance))
+	log.Printf("successfully updated metric for route '%s'", metricConfig.Route.Name)
 }
