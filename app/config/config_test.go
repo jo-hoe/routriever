@@ -28,6 +28,7 @@ func Test_GetConfig(t *testing.T) {
 				configPath: GetConfigFilePath(),
 			},
 			wantConfig: Config{
+				UpdateInterval: "30s",
 				Routes: []Route{
 					{
 						Name: "Route to TomTom HQs",
