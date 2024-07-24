@@ -10,8 +10,8 @@ import (
 )
 
 func TestGeneratePrometheusMetrics(t *testing.T) {
-	expectedMetricName := "Route to TomTom HQs"
-	expectedMetricHelp := "Distance in second driving for route Route to TomTom HQs"
+	expectedMetricName := "Route between TomTom HQs"
+	expectedMetricHelp := "Distance in second driving for route Route between TomTom HQs"
 
 	type args struct {
 		config config.Config
@@ -27,7 +27,7 @@ func TestGeneratePrometheusMetrics(t *testing.T) {
 				config: config.Config{
 					Routes: []config.Route{
 						{
-							Name: "Route to TomTom HQs",
+							Name: "Route between TomTom HQs",
 							Start: config.GPSCoordinates{
 								Latitude:  1.0,
 								Longitude: 2.0,
@@ -40,7 +40,7 @@ func TestGeneratePrometheusMetrics(t *testing.T) {
 					},
 				}},
 			want: map[string]prometheus.Gauge{
-				"Route to TomTom HQs": prometheus.NewGauge(prometheus.GaugeOpts{
+				"Route between TomTom HQs": prometheus.NewGauge(prometheus.GaugeOpts{
 					Name: expectedMetricName,
 					Help: expectedMetricHelp,
 				}),

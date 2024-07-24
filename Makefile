@@ -11,7 +11,7 @@ update: ## pulls git repo and installs all dependencies
 
 .PHONY: test
 test: ## test service
-	@go test ${ROOT_DIR}... -v
+	@go test ${ROOT_DIR}...
 
 .PHONY: start-docker
 start-docker: ## build and starts the service via docker

@@ -22,7 +22,7 @@ func (m *mockRouteService) GetRouteDistance(start config.GPSCoordinates, end con
 func TestMetricsUpdater_updateMetric(t *testing.T) {
 	testConfig := app.MetricConfig{
 		Route: config.Route{
-			Name: "Route to TomTom HQs",
+			Name: "Route between TomTom HQs",
 			Start: config.GPSCoordinates{
 				Latitude:  1.0,
 				Longitude: 2.0,
@@ -55,7 +55,7 @@ func TestMetricsUpdater_updateMetric(t *testing.T) {
 func TestMetricsUpdater_NewMetricsUpdater(t *testing.T) {
 	testConfig := app.MetricConfig{
 		Route: config.Route{
-			Name: "Route to TomTom HQs",
+			Name: "Route between TomTom HQs",
 			Start: config.GPSCoordinates{
 				Latitude:  1.0,
 				Longitude: 2.0,

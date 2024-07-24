@@ -1,6 +1,6 @@
 updateInterval: 30s
 routes:
-  - name: Route to TomTom HQs
+  - name: Route between TomTom HQs
     start: 
       latitude: 52.3764134
       longitude: 4.908321

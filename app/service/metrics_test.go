@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/jo-hoe/routriever/app/config"
@@ -23,7 +22,7 @@ func TestGeneratePrometheusMetrics(t *testing.T) {
 				config: config.Config{
 					Routes: []config.Route{
 						{
-							Name: "Route to TomTom HQs",
+							Name: "Route between TomTom HQs",
 							Start: config.GPSCoordinates{
 								Latitude:  1.0,
 								Longitude: 2.0,
@@ -36,9 +35,9 @@ func TestGeneratePrometheusMetrics(t *testing.T) {
 					},
 				}},
 			want: map[string]prometheus.Gauge{
-				"Route to TomTom HQs": prometheus.NewGauge(prometheus.GaugeOpts{
-					Name: "route_to_tomtom_hqs",
-					Help: "Distance in second driving for route Route to TomTom HQs",
+				"Route between TomTom HQs": prometheus.NewGauge(prometheus.GaugeOpts{
+					Name: "Route_between_TomTom_HQs",
+					Help: "Distance in second driving for route Route between TomTom HQs",
 				}),
 			},
 		},
@@ -47,12 +46,14 @@ func TestGeneratePrometheusMetrics(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			got := GeneratePrometheusMetrics(tt.args.config)
 
-			// TODO: name and help comparison
 			for key, value := range got {
 				if _, ok := tt.want[key]; !ok {
 					t.Errorf("GeneratePrometheusMetrics() = %v, want %v", got, tt.want)
 				}
-				fmt.Print(value)
+
+				if value.Desc().String() != tt.want[key].Desc().String() {
+					t.Errorf("GeneratePrometheusMetrics() = %v, want %v", value.Desc().String(), tt.want[key].Desc().String())
+				}
 			}
 		})
 	}

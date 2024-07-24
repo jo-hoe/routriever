@@ -31,7 +31,7 @@ func Test_GetConfig(t *testing.T) {
 				UpdateInterval: "30s",
 				Routes: []Route{
 					{
-						Name: "Route to TomTom HQs",
+						Name: "Route between TomTom HQs",
 						Start: GPSCoordinates{
 							Latitude:  52.3764134,
 							Longitude: 4.908321,
