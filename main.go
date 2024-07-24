@@ -49,7 +49,7 @@ func init() {
 		configPath = defaultConfigPath
 	}
 
-	config, err := config.GetConfigFromFile(configPath)
+	config, err := config.GetConfig(configPath)
 	if err != nil {
 		log.Fatalf("could not read config %v", err)
 	}

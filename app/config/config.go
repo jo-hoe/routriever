@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -42,13 +41,5 @@ func GetConfig(configPath string) (config Config, err error) {
 		}
 	}
 
-	return config, err
-}
-
-func GetConfigFromFile(configPath string) (config Config, err error) {
-	config, err = GetConfig(configPath)
-	if err != nil {
-		log.Fatal("could not read config")
-	}
 	return config, err
 }

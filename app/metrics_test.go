@@ -1,6 +1,7 @@
 package app
 
 import (
+	"reflect"
 	"strings"
 	"testing"
 
@@ -96,6 +97,50 @@ func TestRegisterMetrics(t *testing.T) {
 				if foundMetrics != len(tt.args.metrics) {
 					t.Errorf("RegisterMetrics() = %v, want %v", foundMetrics, len(tt.args.metrics))
 				}
+			}
+		})
+	}
+}
+
+func TestGetMetricsConfig(t *testing.T) {
+	testRoute := config.Route{
+		Name:  "Route between TomTom HQs",
+		Start: config.GPSCoordinates{},
+		End:   config.GPSCoordinates{},
+	}
+	testMetric := prometheus.NewGauge(prometheus.GaugeOpts{})
+
+	type args struct {
+		config  config.Config
+		metrics map[string]prometheus.Gauge
+	}
+	tests := []struct {
+		name string
+		args args
+		want []MetricConfig
+	}{
+		{
+			name: "test that metrics and configs are combined correctly",
+			args: args{
+				config: config.Config{
+					Routes: []config.Route{testRoute},
+				},
+				metrics: map[string]prometheus.Gauge{
+					testRoute.Name: testMetric,
+				},
+			},
+			want: []MetricConfig{
+				{
+					Route:  testRoute,
+					Metric: testMetric,
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := GetMetricsConfig(tt.args.config, tt.args.metrics); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("GetMetricsConfig() = %v, want %v", got, tt.want)
 			}
 		})
 	}
