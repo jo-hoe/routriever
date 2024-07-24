@@ -13,9 +13,9 @@ services:
       timeout: 12s
     environment:
       PORT: "8080"
-      CONFIG_PATH: /app/config/testconfig.yaml
+      CONFIG_PATH: /config/testconfig.yaml
     env_file:
       - /dev/.env
     volumes:
-      - ./test/:/app/config/
+      - ./test/:/config/
 

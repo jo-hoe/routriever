@@ -28,20 +28,6 @@ gpsServices:
 #     latitude: 51.4125186
 #     longitude: 5.4505796
 routes: []
-  #- name: "home_work"
-  #  start: 
-  #    latitude: 52.520008
-  #    longitude: 13.404954
-  #  end: 
-  #    latitude: 51.4125186
-  #    longitude: 5.4505796
-  #- name: "work_home"
-  #  start: 
-  #    latitude: 51.4125186
-  #    longitude: 5.4505796
-  #  end: 
-  #    latitude: 52.520008
-  #    longitude: 13.404954
 
 replicaCount: 1
 
@@ -104,13 +90,6 @@ readinessProbe:
   httpGet:
     path: /
     port: http
-
-# Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts: []

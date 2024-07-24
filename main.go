@@ -21,7 +21,7 @@ const (
 	defaultPort = "8080"
 
 	configPathEnvVar  = "CONFIG_PATH"
-	defaultConfigPath = "./config.yaml"
+	defaultConfigPath = "/config/config.yaml"
 )
 
 func main() {
