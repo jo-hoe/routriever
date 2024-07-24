@@ -20,3 +20,7 @@ start-docker: ## build and starts the service via docker
 .PHONY: start
 start: ## starts the service
 	@go run ${ROOT_DIR}main.go
+
+.PHONY: generate-helm-docs
+generate-helm-docs: ## re-generates helm docs using docker
+	@docker run --rm --volume "$(ROOT_DIR)/charts:/helm-docs" jnorwood/helm-docs:latest
