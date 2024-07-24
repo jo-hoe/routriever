@@ -21,16 +21,21 @@ The service monitor can be consumed by Prometheus.
 
 ## How To Run
 
-## Secrets
-
-For local development it is excepted to have a `.env` file in folder `dev`.
-You can use applications such a [VeraCrypt](https://www.veracrypt.fr/en/Home.html) to encrypt the file.
-
-The .env file is excepted to have the following content:
+For local development, you can use `docker-compose` to run the service.
+Before you should add a `.env` file in the `dev` folder.
+This file should contain the following content:
 
 ```.env
-TOMTOM_API_KEY=<your key>
+TOMTOM_API_KEY=your_api_key
 ```
+
+Then you can run the service with
+
+```bash
+docker-compose up
+```
+
+In case you do not want to have the API key stored in plain text, consider to mount the dev folder as a volume, e.g. with [VeraCrypt](https://www.veracrypt.fr/en/Home.html).
 
 ### Optional
 

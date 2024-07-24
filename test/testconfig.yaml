@@ -1,3 +1,4 @@
+updateInterval: 30s
 routes:
   - name: Route to TomTom HQs
     start: 

@@ -5,13 +5,14 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
+	"github.com/jo-hoe/routriever/app"
 	"github.com/jo-hoe/routriever/app/config"
-	app "github.com/jo-hoe/routriever/app/service"
 	"github.com/jo-hoe/routriever/app/service/gpsservice"
+	"github.com/jo-hoe/routriever/app/service/metrics"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
@@ -23,11 +24,6 @@ const (
 	defaultConfigPath = "./config.yaml"
 )
 
-var (
-	metrics           map[string]prometheus.Gauge
-	routrieverService gpsservice.RoutrieverService
-)
-
 func main() {
 	e := echo.New()
 
@@ -35,7 +31,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/", probeHandler)
-	http.Handle("/metrics", promhttp.Handler())
+	e.GET("/metrics", echo.WrapHandler(promhttp.Handler()))
 
 	port := os.Getenv(portEnvVar)
 	if port == "" {
@@ -58,16 +54,23 @@ func init() {
 		log.Fatalf("could not read config %v", err)
 	}
 
-	// create metrics from config
-	metrics = app.GeneratePrometheusMetrics(config)
-	for _, metric := range metrics {
-		prometheus.MustRegister(metric)
+	interval, err := time.ParseDuration(config.UpdateInterval)
+	if err != nil {
+		log.Fatalf("could not parse update interval error: '%v'", err)
 	}
 
-	routrieverService, err = gpsservice.NewRoutrieverService()
+	// this will panic in case config is incorrect
+	prometheusMetrics := app.GeneratePrometheusMetrics(config)
+	app.RegisterMetrics(prometheusMetrics)
+	metricConfigs := app.GetMetricsConfig(config, prometheusMetrics)
+
+	routrieverService, err := gpsservice.NewRoutrieverService()
 	if err != nil {
-		log.Fatal("could not create routriever service")
+		log.Fatalf("could not create routriever service error: '%v'", err)
 	}
+
+	metricsUpdater := metrics.NewMetricsUpdater(metricConfigs, routrieverService, interval)
+	metricsUpdater.Start()
 }
 
 func probeHandler(ctx echo.Context) (err error) {

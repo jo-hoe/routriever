@@ -8,8 +8,11 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+const updateIntervalDefault = "1m"
+
 type Config struct {
-	Routes []Route `yaml:"routes"`
+	Routes         []Route `yaml:"routes"`
+	UpdateInterval string  `yaml:"updateInterval"`
 }
 
 type Route struct {
@@ -32,6 +35,11 @@ func GetConfig(configPath string) (config Config, err error) {
 
 	if err = yaml.Unmarshal(data, &config); err != nil {
 		err = fmt.Errorf("could not unmarshal config file error: '%v'", err)
+	} else {
+		// set default update interval if not set and no failure detected
+		if config.UpdateInterval == "" {
+			config.UpdateInterval = updateIntervalDefault
+		}
 	}
 
 	return config, err
