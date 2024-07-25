@@ -37,6 +37,22 @@ Afterwards you can run the service with
 docker-compose up
 ```
 
+### K3s
+
+[Install K3D](https://k3d.io/#install-script) to run the service in a local kubernetes cluster.
+Ensure your [turned on Kubernetes in Docker Desktop](https://docs.docker.com/desktop/kubernetes/#install-and-turn-on-kubernetes).
+Run the following command to start the service in a local kubernetes cluster.
+
+```bash
+make k3d-start
+```
+
+and stop it with
+
+```bash
+make k3d-stop
+```
+
 ### Optional
 
 Run the project is using `make`. `make` is typically installed by default on Linux and Mac.

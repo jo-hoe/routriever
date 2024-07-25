@@ -44,17 +44,28 @@ spec:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            - name: CONFIG_PATH
+              value: /run/config/config.yaml
+            - name: SECRET_PATH
+              value: /etc/secrets/apikey
           volumeMounts:
-            - mountPath: /config
+            - mountPath: /run/config
               name: {{ include "routriever.fullname" . }}-volume
               readOnly: true
+            - mountPath: /etc/secrets
+              name: {{ include "routriever.fullname" . }}-secret
+              readOnly: true
       volumes:
-      - name: {{ include "routriever.fullname" . }}-volume
-        configMap:
-          name: {{ include "routriever.fullname" . }}-config
-          items:
-            - key: config.yaml
-              path: config.yaml
+        - name: {{ include "routriever.fullname" . }}-volume
+          configMap:
+            name: {{ include "routriever.fullname" . }}-config
+            items:
+              - key: config.yaml
+                path: config.yaml
+        - name: {{ include "routriever.fullname" . }}-secret
+          secret:
+            secretName: apikey
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
