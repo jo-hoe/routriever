@@ -13,6 +13,21 @@ The service monitor can be consumed by Prometheus.
 
 Currently the service only supports TomTom as GPS service.
 You can create an API key in the [TomTom Developer Portal](https://developer.tomtom.com/).
+Before you can start the service locally you need to provide the api key.
+This can be done by setting is as environment variable `TOM_TOM_API_KEY`
+In PowerShell you set
+
+```PowerShell
+$env:TOM_TOM_API_KEY = "<your tom tom api key>";
+```
+
+and in bash you can use
+
+```bash
+TOM_TOM_API_KEY="<your tom tom api key>"
+```
+
+Afterwards you can start the service.
 
 ## Prerequisites to run locally
 
@@ -39,34 +54,19 @@ make help
 ## How To Run Locally
 
 To run the service locally, you can use `docker-compose`.
-Before you have to provide the api key.
-This can be done by setting is as environment variable `TOM_TOM_API_KEY`
-In PowerShell you set
-
-```PowerShell
-$env:TOM_TOM_API_KEY = "<your tom tom api key>";
-```
-
-and in bash you can use
-
-```bash
-TOM_TOM_API_KEY="<your tom tom api key>"
-```
-
-Afterwards you can start the service by running
 
 ```bash
 make start
 ```
 
-### K3s
+### K3D
 
 [Install K3D](https://k3d.io/#install-script) to run the service in a local kubernetes cluster.
 Ensure your [turned on Kubernetes in Docker Desktop](https://docs.docker.com/desktop/kubernetes/#install-and-turn-on-kubernetes).
 Run the following command to start the service in a local kubernetes cluster.
 
 ```bash
-make k3d-start api_key=<your tom tom api key>
+make k3d-start
 ```
 
 and stop it with
