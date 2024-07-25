@@ -6,35 +6,57 @@
 [![Coverage Status](https://coveralls.io/repos/github/jo-hoe/routriever/badge.svg?branch=main)](https://coveralls.io/github/jo-hoe/routriever?branch=main)
 
 Collects length of given routes and provides them as business metric to prometheus.
-
-## Planned Architecture
-
-The deployment will run a pod, a service, and provide a service monitor to track the metric.
-
-```yaml
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-...
-```
-
+The deployment will runs a pod, a service, and provides a service monitor to track the metric.
 The service monitor can be consumed by Prometheus.
 
-## How To Run
+## API Key
 
-To run the service locally, you can use `docker-compose`.
-Before you have to provide the api key via a file with name `secret.txt` in folder `dev`.
-This file should contain the following content:
+Currently the service only supports TomTom as GPS service.
+You can create an API key in the [TomTom Developer Portal](https://developer.tomtom.com/).
 
-```.txt
-<your_tomtom_api_key>
+## Prerequisites to run locally
+
+Run the project is using `make`. `make` is typically installed by default on Linux and Mac.
+
+If you run on Windows, you can directly install it from [gnuwin32](https://gnuwin32.sourceforge.net/packages/make.htm) or via `winget`
+
+```PowerShell
+winget install GnuWin32.Make
 ```
 
-In case you do not want to have the API key stored in plain text, consider to mount the dev folder as a volume, e.g. with [VeraCrypt](https://www.veracrypt.fr/en/Home.html).
+Futhermore you will need Docker and Python.
+Python is only used to set the API key without the need to persist it.
+If you do not want to use Python you may also create a file containing your API key and setting the environment variable `SECRET_FILE_PATH` to the file path of that file.
 
-Afterwards you can run the service with
+### How to Use
+
+You can check all `make` command by running
 
 ```bash
-docker-compose up
+make help
+```
+
+## How To Run Locally
+
+To run the service locally, you can use `docker-compose`.
+Before you have to provide the api key.
+This can be done by setting is as environment variable `TOM_TOM_API_KEY`
+In PowerShell you set
+
+```PowerShell
+$env:TOM_TOM_API_KEY = "<your tom tom api key>";
+```
+
+and in bash you can use
+
+```bash
+TOM_TOM_API_KEY="<your tom tom api key>"
+```
+
+Afterwards you can start the service by running
+
+```bash
+make start
 ```
 
 ### K3s
@@ -51,24 +73,6 @@ and stop it with
 
 ```bash
 make k3d-stop
-```
-
-### Optional
-
-Run the project is using `make`. `make` is typically installed by default on Linux and Mac.
-
-If you run on Windows, you can directly install it from [gnuwin32](https://gnuwin32.sourceforge.net/packages/make.htm) or via `winget`
-
-```PowerShell
-winget install GnuWin32.Make
-```
-
-## How to Use
-
-You can check all `make` command by running
-
-```bash
-make help
 ```
 
 ### Test

@@ -14,7 +14,7 @@ services:
     environment:
       PORT: "8080"
       CONFIG_PATH: /config/testconfig.yaml
-      SECRET_PATH: /secrets/secret.txt
+      SECRET_PATH: /secrets/apikey
     volumes:
-      - ./test/:/config/
-      - ./dev/:/secrets/
+      - ./test/:/config/:ro
+      - ${SECRET_FILE_PATH}:/secrets/apikey:ro

@@ -21,7 +21,7 @@ test: ## test service
 
 .PHONY: start
 start: ## build and starts the service via docker
-	@docker compose -f ${ROOT_DIR}compose.yaml up --build
+	@python $(ROOT_DIR)docker-compose.py
 
 .PHONY: generate-helm-docs
 generate-helm-docs: ## re-generates helm docs using docker
@@ -38,7 +38,7 @@ k3d-start: start-cluster k3d-push ## run make `k3d-start api_key=<your_api_key>`
 	@helm install ${IMAGE_NAME} ${ROOT_DIR}charts/${IMAGE_NAME}  \
 		--set image.repository=registry.localhost:5000/${IMAGE_NAME} --set image.tag=${IMAGE_VERSION} \
 		-f ${ROOT_DIR}test/configmap-defaults.yaml \
-		--set gpsServices.tomTomService.apiKey=${api_key}
+		--set gpsServices.tomTomService.apiKey=${TOM_TOM_API_KEY}
 
 .PHONY: k3d-stop
 k3d-stop: ## stop K3d
