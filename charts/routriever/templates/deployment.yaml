@@ -35,7 +35,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
+            - name: {{ .Values.service.portName }}
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           livenessProbe:
@@ -48,7 +48,9 @@ spec:
             - name: CONFIG_PATH
               value: /run/config/config.yaml
             - name: SECRET_PATH
-              value: /etc/secrets/apikey
+              value: /etc/secrets/tomTomApiKey
+            - name: PORT
+              value: "{{ .Values.service.port }}"
           volumeMounts:
             - mountPath: /run/config
               name: {{ include "routriever.fullname" . }}-volume
@@ -65,7 +67,10 @@ spec:
                 path: config.yaml
         - name: {{ include "routriever.fullname" . }}-secret
           secret:
-            secretName: apikey
+            secretName: {{ include "routriever.fullname" . }}-secret
+            items:
+              - key: tomTomApiKey
+                path: tomTomApiKey
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

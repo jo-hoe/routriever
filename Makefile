@@ -29,20 +29,20 @@ generate-helm-docs: ## re-generates helm docs using docker
 
 .PHONY: start-cluster
 start-cluster: # starts k3d cluster and registry
-	@k3d cluster create --config ${ROOT_DIR}k3d/clusterconfig.yaml 
-# @helm install go-mail-service --set service.port=$(API_PORT) \
+	@k3d cluster create --config ${ROOT_DIR}k3d/clusterconfig.yaml
 
 .PHONY: k3d-start
-k3d-start: start-cluster k3d-push ## starts k3d, registry, and deploys promtheus CRDs and installs local helm chart, with local image
-	@kubectl create -f https://raw.githubusercontent.com/coreos/prometheus-operator/v${PROMETHEUS_VERSION}/bundle.yaml
-	@helm install ${IMAGE_NAME} ${ROOT_DIR}charts/${IMAGE_NAME} --set image.repository=localhost:5000/${IMAGE_NAME} --set image.tag=${IMAGE_VERSION}
+k3d-start: start-cluster k3d-push ## run make `k3d-start api_key=<your_api_key>` start k3d cluster and deploy local code
+	@helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+	@helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack
+	@helm install ${IMAGE_NAME} ${ROOT_DIR}charts/${IMAGE_NAME}  \
+		--set image.repository=registry.localhost:5000/${IMAGE_NAME} --set image.tag=${IMAGE_VERSION} \
+		-f ${ROOT_DIR}test/configmap-defaults.yaml \
+		--set gpsServices.tomTomService.apiKey=${api_key} --debug
 
 .PHONY: k3d-stop
 k3d-stop: ## stop K3d
 	@k3d cluster delete --config ${ROOT_DIR}k3d/clusterconfig.yaml
-
-.PHONY: k3d-restart
-k3d-restart: k3d-stop k3d-start ## restart k3d
 
 .PHONY: k3d-push
 k3d-push: # build and push docker image to local registry

@@ -5,9 +5,11 @@
 # -- The following describes the configuration of the service monitor
 serviceMonitor:
   # -- Whether to create a service monitor for the service
-  enabled: true
+  create: true
   # -- The interval at which the metrics will be scraped
   interval: 5m
+  # -- Name of the prometheus release label. Should equal the release name of the according prometheus.
+  release: kube-prometheus-stack
 
 gpsServices:
   # -- Update interval for the GPS service
@@ -27,7 +29,14 @@ gpsServices:
 #   end: 
 #     latitude: 51.4125186
 #     longitude: 5.4505796
-routes: []
+routes:
+- name: Route between TomTom HQs
+  start: 
+    latitude: 52.3764134
+    longitude: 4.908321
+  end:
+    latitude: 51.4125186
+    longitude: 5.4505796
 
 replicaCount: 1
 
@@ -43,14 +52,11 @@ fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
-  create: true
+  enabled: true
   # Automatically mount a ServiceAccount's API credentials?
   automount: true
   # Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
 
 podAnnotations: {}
 podLabels: {}
@@ -80,23 +86,18 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
   # requests:
-  #   cpu: 100m
+  #   cpu: 100metricsm
   #   memory: 128Mi
 
 livenessProbe:
   httpGet:
     path: /
-    port: http
+    port: metrics
 readinessProbe:
   httpGet:
     path: /
-    port: http
+    port: metrics
 
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
 
 nodeSelector: {}
 

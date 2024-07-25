@@ -1,14 +1,15 @@
-{{- if .Values.serviceAccount.create -}}
+{{- if .Values.serviceMonitor.create -}}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "routriever.fullname" . }}
   labels:
+    release: {{ .Values.serviceMonitor.release }}
     {{- include "routriever.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      {{- include "routriever.labels" . | nindent 4 }}
+      {{- include "routriever.selectorLabels" . | nindent 6 }}
   endpoints:
   - port: {{ .Values.service.portName }}
     interval: {{ .Values.serviceMonitor.interval }}

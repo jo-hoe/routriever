@@ -7,13 +7,7 @@ metadata:
 data:
   config.yaml: |-
     updateInterval: {{ .Values.gpsServices.updateInterval }}
+    {{- with .Values.routes }}
     routes:
-      {{- range .Values.routes }}
-      - name: "{{ .name }}"
-        start:
-          latitude: {{ .start.latitude }}
-          longitude: {{ .start.longitude }}
-        end:
-          latitude: {{ .end.latitude }}
-          longitude: {{ .end.longitude }}
-      {{- end }}
+      {{- toYaml . | nindent 6 }}
+    {{- end }}

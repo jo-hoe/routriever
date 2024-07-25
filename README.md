@@ -44,7 +44,7 @@ Ensure your [turned on Kubernetes in Docker Desktop](https://docs.docker.com/des
 Run the following command to start the service in a local kubernetes cluster.
 
 ```bash
-make k3d-start
+make k3d-start api_key=<your tom tom api key>
 ```
 
 and stop it with
