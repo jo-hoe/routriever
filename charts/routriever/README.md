@@ -28,7 +28,7 @@ Retrieves routes between two points and exposes them as a Prometheus metric
 | readinessProbe.httpGet.port | string | `"metrics"` |  |
 | replicaCount | int | `1` |  |
 | resources | object | `{}` |  |
-| routes | list | `[]` | The following is a list of routes that the service will calculate and store in the database Example: - name: "home_work"   start:      latitude: 52.520008     longitude: 13.404954   end:      latitude: 51.4125186     longitude: 5.4505796 |
+| routes | list | `[]` | The following is a list of routes that the service will calculate and store in the database Example: - name: "home_work"   start:      latitude: 52.3764134     longitude: 4.908321   end:     latitude: 51.4125186     longitude: 5.4505796 |
 | securityContext | object | `{}` |  |
 | service.port | int | `80` |  |
 | service.portName | string | `"metrics"` |  |
