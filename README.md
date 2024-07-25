@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/jo-hoe/routriever/badge.svg?branch=main)](https://coveralls.io/github/jo-hoe/routriever?branch=main)
 
 Collects length of given routes and provides them as business metric to prometheus.
-The deployment will runs a pod, a service, and provides a service monitor to track the metric.
+The helm chart provides a service and a service monitor to track the metric.
 The service monitor can be consumed by Prometheus.
 
 ## API Key
