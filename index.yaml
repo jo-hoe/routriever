@@ -1,0 +1,15 @@
+apiVersion: v1
+entries:
+  routriever:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2024-07-25T19:45:35.524898306Z"
+    description: Retrieves routes between two points and exposes them as a Prometheus
+      metric
+    digest: 073f17278f5c56bb67e4d5cd65d83186598a0afad086f317b880c173f03b54d8
+    name: routriever
+    type: application
+    urls:
+    - https://github.com/jo-hoe/routriever/releases/download/routriever-0.1.0/routriever-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-07-25T19:45:35.524908936Z"
