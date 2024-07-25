@@ -29,14 +29,7 @@ gpsServices:
 #   end: 
 #     latitude: 51.4125186
 #     longitude: 5.4505796
-routes:
-- name: Route between TomTom HQs
-  start: 
-    latitude: 52.3764134
-    longitude: 4.908321
-  end:
-    latitude: 51.4125186
-    longitude: 5.4505796
+routes: []
 
 replicaCount: 1
 
