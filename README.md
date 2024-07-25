@@ -45,7 +45,7 @@ If you do not want to use Python you may also create a file containing your API 
 
 ### How to Use
 
-You can check all `make` command by running
+You can check all `make` commands by running
 
 ```bash
 make help
@@ -77,7 +77,8 @@ make k3d-stop
 
 ### Test
 
-You can use `make` to start the service
+You can use `make` to start the golang tests.
+Just run
 
 ```bash
 make test
