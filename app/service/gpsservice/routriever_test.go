@@ -6,9 +6,6 @@ import (
 	"testing"
 )
 
-const secretFileDir = "dev"
-const secretFileName = "secret.txt"
-
 func TestNewRoutrieverServiceWithoutPath(t *testing.T) {
 	service, err := NewRoutrieverService("")
 	if err == nil {
@@ -50,4 +47,3 @@ func CreateTempFile(t *testing.T) string {
 
 	return file.Name()
 }
-
