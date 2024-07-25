@@ -1,10 +1,7 @@
 package gpsservice
 
 import (
-	"log"
 	"os"
-	"path"
-	"path/filepath"
 	"reflect"
 	"testing"
 )
@@ -23,7 +20,10 @@ func TestNewRoutrieverServiceWithoutPath(t *testing.T) {
 }
 
 func TestNewRoutrieverService(t *testing.T) {
-	service, err := NewRoutrieverService(GetSecretFilePath())
+	tempfile := CreateTempFile(t)
+	defer os.Remove(tempfile)
+
+	service, err := NewRoutrieverService(tempfile)
 	if err != nil {
 		t.Errorf("expected no error but got %v", err)
 	}
@@ -32,14 +32,22 @@ func TestNewRoutrieverService(t *testing.T) {
 	}
 }
 
-func GetSecretFilePath() string {
-	current_directory, error := os.Getwd()
-	if error != nil {
-		log.Fatal(error)
+func CreateTempFile(t *testing.T) string {
+	file, err := os.CreateTemp("", "temp-*.txt")
+	if err != nil {
+		t.Error(err)
 	}
 
-	serviceFolder := filepath.Dir(current_directory)
-	appFolderPath := filepath.Dir(serviceFolder)
-	workingDirectoryPath := filepath.Dir(appFolderPath)
-	return path.Join(workingDirectoryPath, secretFileDir, secretFileName)
+	_, err = file.WriteString("demo content")
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = file.Close()
+	if err != nil {
+		t.Error(err)
+	}
+
+	return file.Name()
 }
+
