@@ -7,7 +7,7 @@ serviceMonitor:
   # -- Whether to create a service monitor for the service
   create: true
   # -- The interval at which the metrics will be scraped
-  interval: 5m
+  interval: 10m
   # -- Name of the prometheus release label. Should equal the release name of the according prometheus.
   release: kube-prometheus-stack
 
