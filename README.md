@@ -6,7 +6,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/jo-hoe/routriever/badge.svg?branch=main)](https://coveralls.io/github/jo-hoe/routriever?branch=main)
 
 Collects length of given routes and provides them as business metric to prometheus.
-The deployment will runs a pod, a service, and provides a service monitor to track the metric.
+The helm chart provides a service and a service monitor to track the metric.
 The service monitor can be consumed by Prometheus.
 
 ## API Key
@@ -45,7 +45,7 @@ If you do not want to use Python you may also create a file containing your API 
 
 ### How to Use
 
-You can check all `make` command by running
+You can check all `make` commands by running
 
 ```bash
 make help
@@ -77,7 +77,8 @@ make k3d-stop
 
 ### Test
 
-You can use `make` to start the service
+You can use `make` to start the golang tests.
+Just run
 
 ```bash
 make test
