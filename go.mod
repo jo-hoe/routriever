@@ -27,7 +27,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	golang.org/x/crypto v0.28.0 // indirect
 	golang.org/x/net v0.30.0 // indirect
-	golang.org/x/sys v0.26.0 // indirect
+	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/text v0.19.0 // indirect
 	golang.org/x/time v0.7.0 // indirect
 	google.golang.org/protobuf v1.35.1 // indirect
