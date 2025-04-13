@@ -43,7 +43,11 @@ func (t *TomTomService) GetRouteDistance(start config.GPSCoordinates, end config
 	if err != nil {
 		return travelTimeInSeconds, err
 	}
-	defer response.Body.Close()
+	defer func() {
+		if err := response.Body.Close(); err != nil {
+			fmt.Printf("failed to close response body: %v\n", err)
+		}
+	}()
 
 	if response.StatusCode != http.StatusOK {
 		return travelTimeInSeconds, fmt.Errorf("status code: %d", response.StatusCode)

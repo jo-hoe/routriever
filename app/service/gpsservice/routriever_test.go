@@ -18,7 +18,11 @@ func TestNewRoutrieverServiceWithoutPath(t *testing.T) {
 
 func TestNewRoutrieverService(t *testing.T) {
 	tempfile := CreateTempFile(t)
-	defer os.Remove(tempfile)
+	defer func() {
+		if err := os.Remove(tempfile); err != nil {
+			t.Errorf("failed to remove temp file: %v", err)
+		}
+	}()
 
 	service, err := NewRoutrieverService(tempfile)
 	if err != nil {
