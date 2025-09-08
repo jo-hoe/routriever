@@ -1,6 +1,6 @@
 module github.com/jo-hoe/routriever
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.24.1
 
@@ -29,6 +29,6 @@ require (
 	golang.org/x/net v0.43.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/text v0.28.0 // indirect
-	golang.org/x/time v0.12.0 // indirect
+	golang.org/x/time v0.13.0 // indirect
 	google.golang.org/protobuf v1.36.8 // indirect
 )
