@@ -14,10 +14,15 @@ PROMETHEUS_VERSION := "0.75.2"
 .PHONY: update
 update: ## pulls git repo and installs all dependencies
 	@git -C ${ROOT_DIR} pull
+	@go mod tidy
 
 .PHONY: test
 test: ## test service
 	@go test ${ROOT_DIR}...
+
+.PHONY: lint
+lint: ## run golangci-lint
+	golangci-lint run ${ROOT_DIR}...
 
 .PHONY: start
 start: ## build and starts the service via docker
